@@ -36,7 +36,7 @@ def get_identicon(name):
 		image = r.content
 		cache.set(name, image)
 	else:
-		print("Cached", flush=True)
+		print("Cached->"+name, flush=True)
 
 	return Response(image, mimetype='image/png')
 
