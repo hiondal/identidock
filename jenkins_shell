@@ -16,12 +16,13 @@ ERR=$?
 #Run system test if unit tests passed
 if [ $ERR -eq 0 ]; then
   IP=$(sudo docker inspect -f {{.NetworkSettings.IPAddress}} jenkins_identidock_1)
-  CODE=$(curl -sL -w "%{http_code}" $IP:9090/monster/bla -o /dev/null) || true
+  #CODE=$(curl -sL -w "%{http_code}" $IP:9090/monster/bla -o /dev/null) || true
+  CODE=$(curl -sL -w "%{http_code}" $IP:5000/monster/bla -o /dev/null) || true
   if [ $CODE -eq 200 ]; then
     echo "Test passed - Tagging"
     HASH=$(git rev-parse --short HEAD)
-    sudo docker tag -f jenkins_identidock hiondal/identidock:$HASH
-    sudo docker tag -f jenkins_identidock hiondal/identidock:newest
+    sudo docker tag jenkins_identidock hiondal/identidock:$HASH
+    sudo docker tag jenkins_identidock hiondal/identidock:newest
     echo "Pushing"
     sudo docker login -e hiondal@gmail.com -u hiondal -p 0srilove
     sudo docker push hiondal/identidock:$HASH
